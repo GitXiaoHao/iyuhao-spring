@@ -1,6 +1,7 @@
 package top.iyuhao.dto;
 
 import lombok.Data;
+import top.iyuhao.entity.User;
 
 import java.io.Serializable;
 

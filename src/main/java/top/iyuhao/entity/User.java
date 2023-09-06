@@ -48,7 +48,8 @@ public class User implements Serializable {
      * 状态
      */
     private Integer userStatus;
-    private String useRole;
+
+    private String userRole;
 
     /**
      * 用户手机号码

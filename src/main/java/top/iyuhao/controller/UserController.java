@@ -6,6 +6,8 @@ import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import top.iyuhao.entity.User;
+import top.iyuhao.service.UserService;
 import top.iyuhao.utils.mail.MailUtils;
 import top.iyuhao.utils.md5.Md5Utils;
 import top.iyuhao.utils.result.Result;

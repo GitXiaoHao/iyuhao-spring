@@ -28,7 +28,6 @@ alter table `user`
 alter table `user`
     add column `user_last_login_time` timestamp comment '最后登录时间' after `user_update_time`;
 
-
 create table article
 (
     `article_id`              varchar(50) not null comment '文章id',
@@ -233,3 +232,20 @@ create table `blog_special_article_relationship`
   COLLATE = utf8_bin COMMENT ='博客专题与文章关系表';
 
 
+
+# create table `blog_admin`
+# (
+#     `blog_admin_id`          varchar(50) not null comment '管理员id',
+#     `blog_admin_name`        varchar(35) comment '管理员昵称',
+#     `blog_admin_password`    varchar(50) comment '博客管理员密码',
+#     `blog_admin_phone` varchar(11) comment '博客管理员手机号码',
+#     `blog_admin_email` varchar(20) comment '博客管理员邮箱',
+#     `blog_admin_status`      tinyint(3)           DEFAULT '0' COMMENT '状态',
+#     `blog_admin_create_time` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+#     `blog_admin_update_time` timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+#     `blog_admin_is_deleted`  tinyint(3)  NOT NULL DEFAULT '0' COMMENT '删除标记（0:不可用 1:可用）',
+#     primary key (`blog_admin_id`),
+#     unique (`blog_admin_name`)
+# )ENGINE = InnoDB
+#  DEFAULT CHARSET = utf8
+#  COLLATE = utf8_bin COMMENT ='博客管理员表';
