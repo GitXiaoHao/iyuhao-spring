@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.iyuhao.mapper.BlogCategoryMapper">
+
+    <resultMap id="BaseResultMap" type="top.iyuhao.entity.BlogCategory">
+            <id property="blogCategoryId" column="blog_category_id" jdbcType="VARCHAR"/>
+            <result property="blogCategoryCover" column="blog_category_cover" jdbcType="VARCHAR"/>
+            <result property="blogCategoryName" column="blog_category_name" jdbcType="VARCHAR"/>
+            <result property="blogCategoryType" column="blog_category_type" jdbcType="VARCHAR"/>
+            <result property="blogCategoryDesc" column="blog_category_desc" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="blogCategoryEssayCount" column="blog_category_essay_count" jdbcType="INTEGER"/>
+            <result property="blogCategoryCreateTime" column="blog_category_create_time" jdbcType="TIMESTAMP"/>
+            <result property="blogCategoryUpdateTime" column="blog_category_update_time" jdbcType="TIMESTAMP"/>
+            <result property="blogCategoryIsDeleted" column="blog_category_is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        blog_category_id,blog_category_cover,blog_category_name,
+        blog_category_type,blog_category_desc,user_id,blog_category_essay_count,
+        blog_category_create_time,blog_category_update_time,blog_category_is_deleted
+    </sql>
+</mapper>

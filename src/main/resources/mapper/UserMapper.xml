@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.iyuhao.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="top.iyuhao.entity.User">
+            <id property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+            <result property="userCover" column="user_cover" jdbcType="VARCHAR"/>
+            <result property="userFans" column="user_fans" jdbcType="INTEGER"/>
+            <result property="userEmail" column="user_email" jdbcType="VARCHAR"/>
+            <result property="userStatus" column="user_status" jdbcType="TINYINT"/>
+            <result property="userPhone" column="user_phone" jdbcType="VARCHAR"/>
+            <result property="userAutograph" column="user_autograph" jdbcType="VARCHAR"/>
+            <result property="userCreateTime" column="user_create_time" jdbcType="TIMESTAMP"/>
+            <result property="userUpdateTime" column="user_update_time" jdbcType="TIMESTAMP"/>
+            <result property="userIsDeleted" column="user_is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id,user_name,user_password,
+        user_cover,user_fans,user_email,
+        user_status,user_phone,user_autograph,
+        user_create_time,user_update_time,user_is_deleted
+    </sql>
+</mapper>

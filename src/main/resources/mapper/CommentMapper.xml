@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.iyuhao.mapper.CommentMapper">
+
+    <resultMap id="BaseResultMap" type="top.iyuhao.entity.Comment">
+            <id property="commentId" column="comment_id" jdbcType="VARCHAR"/>
+            <result property="articleId" column="article_id" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="commentTime" column="comment_time" jdbcType="TIMESTAMP"/>
+            <result property="commentGoodNumber" column="comment_good_number" jdbcType="INTEGER"/>
+            <result property="commentIsDeleted" column="comment_is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        comment_id,article_id,user_id,
+        comment_time,comment_good_number,comment_is_deleted
+    </sql>
+</mapper>

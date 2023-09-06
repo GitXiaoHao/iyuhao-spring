@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.iyuhao.mapper.BlogStatusMapper">
+
+    <resultMap id="BaseResultMap" type="top.iyuhao.entity.BlogStatus">
+            <id property="blogStatusId" column="blog_status_id" jdbcType="VARCHAR"/>
+            <result property="blogStatusName" column="blog_status_name" jdbcType="VARCHAR"/>
+            <result property="blogStatusColor" column="blog_status_color" jdbcType="VARCHAR"/>
+            <result property="blogStatusAddTime" column="blog_status_add_time" jdbcType="TIMESTAMP"/>
+            <result property="blogStatusUpdateTime" column="blog_status_update_time" jdbcType="TIMESTAMP"/>
+            <result property="blogStatusIsDeleted" column="blog_status_is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        blog_status_id,blog_status_name,blog_status_color,
+        blog_status_add_time,blog_status_update_time,blog_status_is_deleted
+    </sql>
+</mapper>

@@ -1,0 +1,96 @@
+server:
+  port: 8083
+  servlet:
+    session:
+      #Session超时时间设置为5小时，单位是秒，默认是30分钟
+      timeout: 18000
+    context-path: /iyuhao
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/iyuhao1?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL
+    username: root
+    password: yu123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#  freemarker:
+#    # 设置模板后缀名
+#    suffix: .ftl
+#    # 设置文档类型
+#    content-type: text/html
+#    # 设置页面编码格式
+#    charset: UTF-8
+#    # 设置页面缓存
+#    cache: true
+#    settings:
+#      number_format: 0.##
+  web:
+    resources:
+      static-locations: classpath:static/,file:static/
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  #邮箱基本配置
+  mail:
+    #配置smtp服务主机地址
+    # qq邮箱为smtp.qq.com          端口号465或587
+    # sina    smtp.sina.cn
+    # aliyun  smtp.aliyun.com
+    # 163     smtp.163.com       端口号465或994
+    host: smtp.qq.com
+    #发送者邮箱
+    username: 2486245007@qq.com
+    #配置密码,注意不是真正的密码，而是刚刚申请到的授权码
+    password: cstclteazgvbeajj
+    #端口号465或587
+    port: 587
+    #默认的邮件编码为UTF-8
+    default-encoding: UTF-8
+    #其他参数
+    properties:
+      mail:
+        #配置SSL 加密工厂
+        smtp:
+          ssl:
+            #本地测试，先放开ssl
+            enable: false
+            required: false
+          #开启debug模式，这样邮件发送过程的日志会在控制台打印出来，方便排查错误
+        debug: true
+
+
+
+mybatis-plus:
+  type-aliases-package: top.iyuhao.entity
+  configuration:
+    call-setters-on-nulls: false
+    #开启驼峰
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  global-config:
+    banner: true
+    db-config:
+      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+      id-type: assign_uuid
+      logic-not-delete-value: 1
+      logic-delete-value: 0
+
+
+logging:
+  level:
+    root: warn #日志配置DEBUG,INFO,WARN,ERROR
+
+
+my-config:
+  mybatis-plus:
+    plugin: true
+    lock: true
+
+
+filePath:
+  imagePath: /file/images/
+

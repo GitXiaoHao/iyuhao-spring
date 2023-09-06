@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.iyuhao.mapper.BlogSpecialMapper">
+
+    <resultMap id="BaseResultMap" type="top.iyuhao.entity.BlogSpecial">
+            <id property="blogSpecialId" column="blog_special_id" jdbcType="VARCHAR"/>
+            <result property="blogSpecialName" column="blog_special_name" jdbcType="VARCHAR"/>
+            <result property="blogSpecialCover" column="blog_special_cover" jdbcType="VARCHAR"/>
+            <result property="blogSpecialBriefIntroduction" column="blog_special_brief_introduction" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="blogSpecialLastUpdateUserId" column="blog_special_last_update_user_id" jdbcType="VARCHAR"/>
+            <result property="blogSpecialGoodNumber" column="blog_special_good_number" jdbcType="INTEGER"/>
+            <result property="blogSpecialViewsNumber" column="blog_special_views_number" jdbcType="INTEGER"/>
+            <result property="blogSpecialFavoriteNumber" column="blog_special_favorite_number" jdbcType="INTEGER"/>
+            <result property="blogSpecialEssayCount" column="blog_special_essay_count" jdbcType="INTEGER"/>
+            <result property="blogSpecialAddTime" column="blog_special_add_time" jdbcType="TIMESTAMP"/>
+            <result property="blogSpecialUpdateTime" column="blog_special_update_time" jdbcType="TIMESTAMP"/>
+            <result property="blogSpecialIsDeleted" column="blog_special_is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        blog_special_id,blog_special_name,blog_special_cover,
+        blog_special_brief_introduction,user_id,user_name,
+        blog_special_last_update_user_id,blog_special_good_number,blog_special_views_number,
+        blog_special_favorite_number,blog_special_essay_count,blog_special_add_time,
+        blog_special_update_time,blog_special_is_deleted
+    </sql>
+</mapper>

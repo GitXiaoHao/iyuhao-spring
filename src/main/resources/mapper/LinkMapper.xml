@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.iyuhao.mapper.LinkMapper">
+
+    <resultMap id="BaseResultMap" type="top.iyuhao.entity.Link">
+            <id property="linkId" column="link_id" jdbcType="VARCHAR"/>
+            <result property="linkName" column="link_name" jdbcType="VARCHAR"/>
+            <result property="linkUrl" column="link_url" jdbcType="VARCHAR"/>
+            <result property="linkLogoUrl" column="link_logo_url" jdbcType="VARCHAR"/>
+            <result property="linkCreateTime" column="link_create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        link_id,link_name,link_url,
+        link_logo_url,link_create_time
+    </sql>
+</mapper>
