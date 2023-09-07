@@ -27,7 +27,8 @@ alter table `user`
     add column `user_role` varchar(10) comment '用户角色' after `user_status`;
 alter table `user`
     add column `user_last_login_time` timestamp comment '最后登录时间' after `user_update_time`;
-alter table `user` modify `user_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `user`
+    modify `user_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 create table article
 (
     `article_id`              varchar(50) not null comment '文章id',
@@ -55,7 +56,8 @@ create table article_tag
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='文章标签表';
-alter table `article_tag` modify `article_tag_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `article_tag`
+    modify `article_tag_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 create table article_tag_list
 (
     `article_tag_list_id` varchar(50) not null comment '文章对应标签id',
@@ -78,7 +80,8 @@ create table comment
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='文章评论表';
-alter table `comment` modify `comment_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `comment`
+    modify `comment_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 create table comment_reply
 (
     `comment_reply_id`          varchar(50) not null comment '文章评论回复id',
@@ -91,7 +94,8 @@ create table comment_reply
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='文章评论回复表';
-alter table `comment_reply` modify `comment_reply_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `comment_reply`
+    modify `comment_reply_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 create table link
 (
     `link_id`          varchar(50) not null comment '链接id',
@@ -120,7 +124,8 @@ create table ad
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='广告表';
-alter table `ad` modify `ad_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `ad`
+    modify `ad_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 
 create table ad_type
 (
@@ -135,7 +140,8 @@ create table ad_type
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='广告类型表';
-alter table `ad_type` modify `ad_type_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `ad_type`
+    modify `ad_type_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 
 
 create table blog_category
@@ -159,7 +165,8 @@ alter table `blog_category`
     add column `blog_category_update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' after `blog_category_create_time`;
 alter table `blog_category`
     modify column `blog_category_name` varchar(20) unique comment '分类名称';
-alter table `blog_category` modify `blog_category_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `blog_category`
+    modify `blog_category_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 
 
 
@@ -191,7 +198,8 @@ alter table `blog_article`
     add column `blog_article_type` varchar(10) comment '文章类型' after `user_name`;
 alter table `blog_article`
     add column `blog_article_reprint_url` varchar(50) comment '文章转载' after `blog_article_type`;
-alter table `blog_article` modify `blog_category_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `blog_article`
+    modify `blog_category_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 
 create table `blog_status`
 (
@@ -205,8 +213,13 @@ create table `blog_status`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='博客状态表';
-alter table `blog_status` modify `blog_status_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `blog_status`
+    add column `blog_status_disable` int default 0 comment '是否被禁用 1:禁用 0:不禁用';
 
+alter table `blog_status`
+    modify `blog_status_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `blog_status`
+    modify `blog_status_color` varchar(50) not null comment '博客状态颜色';
 drop table if exists `blog_special`;
 create table `blog_special`
 (
@@ -228,7 +241,8 @@ create table `blog_special`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='博客专题表';
-alter table `blog_special` modify `blog_special_is_deleted`  tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `blog_special`
+    modify `blog_special_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 
 
 create table `blog_special_article_relationship`
@@ -257,3 +271,21 @@ create table `blog_special_article_relationship`
 # )ENGINE = InnoDB
 #  DEFAULT CHARSET = utf8
 #  COLLATE = utf8_bin COMMENT ='博客管理员表';
+
+drop table if exists `blog_category_type` ;
+create table `blog_category_type`
+(
+    `blog_category_type_id`                 varchar(50) not null comment '博客状态id',
+    `blog_category_type_name`               varchar(10) not null unique comment '博客状态名称',
+    `blog_category_type_disable`            int         not null default 0 comment '是否被禁用 1:禁用 0:不禁用',
+    `blog_category_create_user_id`   varchar(50) comment '创建人id',
+    `blog_category_create_user_name` varchar(35) comment '创建人名称',
+    `blog_category_last_update_user_id` varchar(50) comment '最后一次修改人id',
+    `blog_category_last_update_user_name` varchar(35) comment '最后一次修改人名称',
+    `blog_category_type_add_time`           timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文章添加时间',
+    `blog_category_type_update_time`        timestamp   not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `blog_category_type_is_deleted`         tinyint(3)  NOT NULL DEFAULT '0' COMMENT '删除标记（0:不可用 1:可用）',
+    primary key (`blog_category_type_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8
+  COLLATE = utf8_bin COMMENT ='博客分类类型表';

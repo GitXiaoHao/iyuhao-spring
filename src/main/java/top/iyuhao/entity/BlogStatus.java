@@ -44,7 +44,7 @@ public class BlogStatus implements Serializable {
      */
     @TableLogic
     private Integer blogStatusIsDeleted;
-
+    private String blogStatusDisable;
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

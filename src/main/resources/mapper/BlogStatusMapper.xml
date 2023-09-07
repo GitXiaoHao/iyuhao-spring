@@ -11,10 +11,11 @@
             <result property="blogStatusAddTime" column="blog_status_add_time" jdbcType="TIMESTAMP"/>
             <result property="blogStatusUpdateTime" column="blog_status_update_time" jdbcType="TIMESTAMP"/>
             <result property="blogStatusIsDeleted" column="blog_status_is_deleted" jdbcType="TINYINT"/>
+            <result property="blogStatusDisable" column="blog_status_disable" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         blog_status_id,blog_status_name,blog_status_color,
-        blog_status_add_time,blog_status_update_time,blog_status_is_deleted
+        blog_status_add_time,blog_status_update_time,blog_status_is_deleted,blog_status_disable
     </sql>
 </mapper>

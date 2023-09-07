@@ -2,6 +2,10 @@ package top.iyuhao.controller.blog;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.*;
 import top.iyuhao.entity.BlogCategory;
 import top.iyuhao.service.BlogCategoryService;
@@ -19,6 +23,10 @@ import javax.annotation.Resource;
 public class BlogCategoryController {
     @Resource
     private BlogCategoryService blogCategoryService;
+    @Autowired
+    DataSourceTransactionManager dataSourceTransactionManager;
+    @Autowired
+    TransactionDefinition transactionDefinition;
 
     @GetMapping("/category/{page}/{pageSize}")
     public Result<Page<BlogCategory>> getCategory(@PathVariable("page") Integer page,@PathVariable("pageSize") Integer pageSize) {
@@ -40,12 +48,20 @@ public class BlogCategoryController {
 
     @PostMapping("/category")
     public Result addCategory(@RequestBody BlogCategory category) {
-        //先根据id删除 再新增
-        if (category.getBlogCategoryId() != null) {
-            blogCategoryService.removeById(category.getBlogCategoryId());
+        //开启事务
+        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
+        boolean save = false;
+        try{
+            //先根据id删除 再新增
+            if (category.getBlogCategoryId() != null) {
+                blogCategoryService.removeById(category.getBlogCategoryId());
+            }
+            //再新增
+            save = blogCategoryService.save(category);
+            dataSourceTransactionManager.commit(transactionStatus);
+        }catch (Exception e){
+            dataSourceTransactionManager.rollback(transactionStatus);
         }
-        //再新增
-        boolean save = blogCategoryService.save(category);
         return save ? Result.ok("添加成功") : Result.fail("添加失败");
     }
     @DeleteMapping("/category")
