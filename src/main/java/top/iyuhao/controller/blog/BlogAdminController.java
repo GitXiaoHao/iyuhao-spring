@@ -51,4 +51,13 @@ public class BlogAdminController {
     public Result register(){
         return Result.ok();
     }
+
+    @PutMapping("/admin")
+    public Result saveAdmin(@RequestBody User user){
+        return userService.updateById(user) ?
+                Result.ok(user) : Result.fail("保存失败");
+    }
+
+
+
 }
