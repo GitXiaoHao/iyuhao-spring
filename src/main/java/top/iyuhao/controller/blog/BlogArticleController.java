@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import top.iyuhao.dto.BlogArticleDto;
 import top.iyuhao.entity.BlogArticle;
 import top.iyuhao.service.BlogArticleService;
 import top.iyuhao.utils.result.Result;
@@ -40,11 +41,10 @@ public class BlogArticleController {
         blogArticleService.page(articlePage,wrapper);
         return Result.ok(articlePage);
     }
-    @PutMapping("/addArticle")
-    public Result addArticle(@RequestParam(value = "tags") String[] tags, @RequestBody BlogArticle blogArticle){
-        if (blogArticle != null) {
-            //不为空
-
+    @PostMapping("/addArticle")
+    public Result addArticle(@RequestBody BlogArticleDto blogArticleDto){
+        for (String tag : blogArticleDto.getTags()) {
+            log.info(tag);
         }
         return Result.ok();
     }

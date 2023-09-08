@@ -45,19 +45,31 @@ create table article
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='文章表';
 
+
+drop table if exists `article_tag`;
 create table article_tag
 (
-    `article_tag_id`          varchar(50) not null comment '文章标签id',
-    `article_tag_name`        varchar(35) not null comment '标签名称',
-    `article_tag_add_time`    timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文章标签添加时间',
-    `article_tag_update_time` timestamp   not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '文章标签更新时间',
-    `article_tag_is_deleted`  tinyint(3)  NOT NULL DEFAULT '0' COMMENT '删除标记（0:不可用 1:可用）',
-    primary key (`article_tag_id`)
+    `article_tag_id`                    varchar(50) not null comment '文章标签id',
+    `article_tag_name`                  varchar(35) not null comment '标签名称',
+    `article_tag_create_user_id`        varchar(50) comment '创建人id',
+    `article_tag_create_user_name`      varchar(35) comment '创建人名称',
+    `article_tag_last_update_user_id`   varchar(50) comment '最后一次修改人id',
+    `article_tag_last_update_user_name` varchar(35) comment '最后一次修改人名称',
+    `article_tag_parent_id`             varchar(50) comment '标签上一级的id',
+    `article_tag_add_time`              timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文章标签添加时间',
+    `article_tag_update_time`           timestamp   not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '文章标签更新时间',
+    `article_tag_is_deleted`            tinyint(3)  NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）',
+    primary key (`article_tag_id`),
+    unique (`article_tag_name`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='文章标签表';
-alter table `article_tag`
-    modify `article_tag_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `article_tag` modify column `article_tag_parent_name`  varchar(35) comment '标签父级名称' after `article_tag_parent_id`;
+alter table `article_tag` add column `article_tag_disable`  varchar(35) comment '标签父级名称' after `article_tag_parent_name`;
+alter table `article_tag` modify column `article_tag_disable` int default 0 comment '是否被禁用 1:禁用 0:不禁用' after `article_tag_parent_name`;
+
+
+
 create table article_tag_list
 (
     `article_tag_list_id` varchar(50) not null comment '文章对应标签id',
@@ -272,19 +284,19 @@ create table `blog_special_article_relationship`
 #  DEFAULT CHARSET = utf8
 #  COLLATE = utf8_bin COMMENT ='博客管理员表';
 
-drop table if exists `blog_category_type` ;
+drop table if exists `blog_category_type`;
 create table `blog_category_type`
 (
-    `blog_category_type_id`                 varchar(50) not null comment '博客状态id',
-    `blog_category_type_name`               varchar(10) not null unique comment '博客状态名称',
-    `blog_category_type_disable`            int         not null default 0 comment '是否被禁用 1:禁用 0:不禁用',
-    `blog_category_create_user_id`   varchar(50) comment '创建人id',
-    `blog_category_create_user_name` varchar(35) comment '创建人名称',
-    `blog_category_last_update_user_id` varchar(50) comment '最后一次修改人id',
+    `blog_category_type_id`               varchar(50) not null comment '博客状态id',
+    `blog_category_type_name`             varchar(10) not null unique comment '博客状态名称',
+    `blog_category_type_disable`          int         not null default 0 comment '是否被禁用 1:禁用 0:不禁用',
+    `blog_category_create_user_id`        varchar(50) comment '创建人id',
+    `blog_category_create_user_name`      varchar(35) comment '创建人名称',
+    `blog_category_last_update_user_id`   varchar(50) comment '最后一次修改人id',
     `blog_category_last_update_user_name` varchar(35) comment '最后一次修改人名称',
-    `blog_category_type_add_time`           timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文章添加时间',
-    `blog_category_type_update_time`        timestamp   not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    `blog_category_type_is_deleted`         tinyint(3)  NOT NULL DEFAULT '0' COMMENT '删除标记（0:不可用 1:可用）',
+    `blog_category_type_add_time`         timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '文章添加时间',
+    `blog_category_type_update_time`      timestamp   not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `blog_category_type_is_deleted`       tinyint(3)  NOT NULL DEFAULT '0' COMMENT '删除标记（0:不可用 1:可用）',
     primary key (`blog_category_type_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8

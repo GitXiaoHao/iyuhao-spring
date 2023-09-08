@@ -46,24 +46,16 @@ public class BlogCategoryController {
         return Result.ok(blogCategoryService.getAll());
     }
 
-    @PostMapping("/category")
+    @PostMapping("/add")
     public Result addCategory(@RequestBody BlogCategory category) {
-        //开启事务
-        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
-        boolean save = false;
-        try{
-            //先根据id删除 再新增
-            if (category.getBlogCategoryId() != null) {
-                blogCategoryService.removeById(category.getBlogCategoryId());
-            }
-            //再新增
-            save = blogCategoryService.save(category);
-            dataSourceTransactionManager.commit(transactionStatus);
-        }catch (Exception e){
-            dataSourceTransactionManager.rollback(transactionStatus);
-        }
-        return save ? Result.ok("添加成功") : Result.fail("添加失败");
+        return blogCategoryService.save(category) ? Result.ok("添加成功") : Result.fail("添加失败");
     }
+
+    @PutMapping("/update")
+    public Result updateCategory(@RequestBody BlogCategory category) {
+        return blogCategoryService.updateById(category) ? Result.ok("添加成功") : Result.fail("添加失败");
+    }
+
     @DeleteMapping("/category")
     public Result deleteCategory(@RequestBody BlogCategory category){
         boolean del = false;

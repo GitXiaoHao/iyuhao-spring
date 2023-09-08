@@ -7,13 +7,22 @@
     <resultMap id="BaseResultMap" type="top.iyuhao.entity.ArticleTag">
             <id property="articleTagId" column="article_tag_id" jdbcType="VARCHAR"/>
             <result property="articleTagName" column="article_tag_name" jdbcType="VARCHAR"/>
+            <result property="articleTagCreateUserId" column="article_tag_create_user_id" jdbcType="VARCHAR"/>
+            <result property="articleTagCreateUserName" column="article_tag_create_user_name" jdbcType="VARCHAR"/>
+            <result property="articleTagLastUpdateUserId" column="article_tag_last_update_user_id" jdbcType="VARCHAR"/>
+            <result property="articleTagLastUpdateUserName" column="article_tag_last_update_user_name" jdbcType="VARCHAR"/>
+            <result property="articleTagParentId" column="article_tag_parent_id" jdbcType="VARCHAR"/>
+            <result property="articleTagParentName" column="article_tag_parent_name" jdbcType="VARCHAR"/>
+            <result property="articleTagDisable" column="article_tag_disable" jdbcType="INTEGER"/>
             <result property="articleTagAddTime" column="article_tag_add_time" jdbcType="TIMESTAMP"/>
             <result property="articleTagUpdateTime" column="article_tag_update_time" jdbcType="TIMESTAMP"/>
             <result property="articleTagIsDeleted" column="article_tag_is_deleted" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        article_tag_id,article_tag_name,article_tag_add_time,
-        article_tag_update_time,article_tag_is_deleted
+        article_tag_id,article_tag_name,article_tag_create_user_id,
+        article_tag_create_user_name,article_tag_last_update_user_id,article_tag_last_update_user_name,
+        article_tag_parent_id,article_tag_parent_name,article_tag_disable,
+        article_tag_add_time,article_tag_update_time,article_tag_is_deleted
     </sql>
 </mapper>
