@@ -12,6 +12,7 @@
             <result property="userId" column="user_id" jdbcType="VARCHAR"/>
             <result property="userName" column="user_name" jdbcType="VARCHAR"/>
             <result property="blogSpecialLastUpdateUserId" column="blog_special_last_update_user_id" jdbcType="VARCHAR"/>
+            <result property="blogSpecialLastUpdateUserName" column="blog_special_last_update_user_name" jdbcType="VARCHAR"/>
             <result property="blogSpecialGoodNumber" column="blog_special_good_number" jdbcType="INTEGER"/>
             <result property="blogSpecialViewsNumber" column="blog_special_views_number" jdbcType="INTEGER"/>
             <result property="blogSpecialFavoriteNumber" column="blog_special_favorite_number" jdbcType="INTEGER"/>
@@ -24,7 +25,7 @@
     <sql id="Base_Column_List">
         blog_special_id,blog_special_name,blog_special_cover,
         blog_special_brief_introduction,user_id,user_name,
-        blog_special_last_update_user_id,blog_special_good_number,blog_special_views_number,
+        blog_special_last_update_user_id,blog_special_last_update_user_name,blog_special_good_number,blog_special_views_number,
         blog_special_favorite_number,blog_special_essay_count,blog_special_add_time,
         blog_special_update_time,blog_special_is_deleted
     </sql>

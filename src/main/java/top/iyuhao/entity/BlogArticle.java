@@ -54,6 +54,7 @@ public class BlogArticle implements Serializable {
      * 博客文章编辑器类型
      */
     private String blogArticleEditorType;
+    private String blogSpecialId;
 
     /**
      * 博客文章编辑人id

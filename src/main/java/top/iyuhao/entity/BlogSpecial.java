@@ -48,6 +48,7 @@ public class BlogSpecial implements Serializable {
      * 博客专题最后一次修改人id
      */
     private String blogSpecialLastUpdateUserId;
+    private String blogSpecialLastUpdateUserName;
 
     /**
      * 点赞次数

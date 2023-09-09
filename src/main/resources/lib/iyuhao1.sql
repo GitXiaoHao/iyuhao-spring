@@ -211,6 +211,11 @@ alter table `blog_article`
 alter table `blog_article`
     add column `blog_article_reprint_url` varchar(50) comment '文章转载' after `blog_article_type`;
 alter table `blog_article`
+    add column `blog_special_id` varchar(50) comment '文章专题id' after `blog_article_editor_type`;
+alter table `blog_article`
+    add column `blog_special_name` varchar(35) comment '文章专题名称' after `blog_special_id`;
+alter table `blog_article` drop `blog_special_name`;
+alter table `blog_article`
     modify `blog_category_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 
 create table `blog_status`
@@ -255,6 +260,8 @@ create table `blog_special`
   COLLATE = utf8_bin COMMENT ='博客专题表';
 alter table `blog_special`
     modify `blog_special_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `blog_special`
+    add column `blog_special_last_update_user_name` varchar(35)  COMMENT '博客专题最后一次修改人名称';
 
 
 create table `blog_special_article_relationship`

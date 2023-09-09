@@ -142,6 +142,15 @@ public class BlogArticleController {
         return Result.ok(articleTag4id);
     }
 
+    @GetMapping("/special/{id}")
+    public Result getArticle4Special(@PathVariable("id") String id){
+        //找到所有 这个专题的文章
+        LambdaQueryWrapper<BlogArticle> blogArticleLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        blogArticleLambdaQueryWrapper.eq(BlogArticle::getBlogSpecialId , id);
+        return Result.ok(blogArticleService.list(blogArticleLambdaQueryWrapper));
+    }
+
+
     /**
      * 根据 文章id 删除文章与标签的对应关系
      * @param blogArticle

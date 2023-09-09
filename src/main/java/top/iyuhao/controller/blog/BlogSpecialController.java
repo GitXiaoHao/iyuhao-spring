@@ -45,21 +45,12 @@ public class BlogSpecialController {
 
     @PostMapping("/special")
     public Result updateSpecial(@RequestBody BlogSpecial blogSpecial){
-        if (blogSpecial == null) {
-            return Result.fail("传输数据失败");
-        }
-        if (blogSpecial.getBlogSpecialId() != null) {
-            //修改
-            //   TODO 博客专题最后一次修改人id
+        return blogSpecialService.saveOrUpdate(blogSpecial) ?
+                Result.ok(blogSpecial) : Result.fail("修改失败");
+    }
 
-            return blogSpecialService.updateById(blogSpecial) ?
-                    Result.ok(blogSpecial) : Result.fail("修改失败");
-
-        }
-        //添加
-        // TODO 博客专题编辑人 博客专题作者
-
-        return blogSpecialService.save(blogSpecial) ?
-                Result.ok(blogSpecial) : Result.fail("添加失败");
+    @GetMapping("/list")
+    public Result getSpecialList() {
+        return Result.ok(blogSpecialService.list());
     }
 }

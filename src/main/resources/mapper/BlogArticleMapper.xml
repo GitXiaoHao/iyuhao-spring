@@ -13,6 +13,7 @@
             <result property="blogArticleContent" column="blog_article_content" jdbcType="VARCHAR"/>
             <result property="blogArticleMarkdownContent" column="blog_article_markdown_content" jdbcType="VARCHAR"/>
             <result property="blogArticleEditorType" column="blog_article_editor_type" jdbcType="VARCHAR"/>
+            <result property="blogSpecialId" column="blog_special_id" jdbcType="VARCHAR"/>
             <result property="userId" column="user_id" jdbcType="VARCHAR"/>
             <result property="userName" column="user_name" jdbcType="VARCHAR"/>
             <result property="blogArticleAllowComment" column="blog_article_allow_comment" jdbcType="INTEGER"/>
@@ -28,7 +29,7 @@
     <sql id="Base_Column_List">
         blog_article_id,blog_article_title,blog_category_name,
         blog_article_cover,blog_article_summary,blog_article_content,
-        blog_article_markdown_content,blog_article_editor_type,user_id,
+        blog_article_markdown_content,blog_article_editor_type,blog_special_id,user_id,
         user_name,blog_article_allow_comment,blog_status_name,
         blog_article_good_number,blog_article_views_number,blog_article_favorite_number,
         blog_article_add_time,blog_article_update_time,blog_category_is_deleted
