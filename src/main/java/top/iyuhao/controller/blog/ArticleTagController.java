@@ -115,6 +115,8 @@ public class ArticleTagController {
         return Result.ok(articleTagDtoList);
     }
 
+
+
     private boolean getChild(ArticleTag articleTag, ArticleTagDto articleTagDto) {
         if (Objects.equals(articleTag.getArticleTagParentId(), articleTagDto.getArticleTag().getArticleTagId())) {
             articleTagDto.getChildren().add(new ArticleTagDto(articleTag, new ArrayList<>()));
