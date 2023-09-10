@@ -53,4 +53,8 @@ public class BlogSpecialController {
     public Result getSpecialList() {
         return Result.ok(blogSpecialService.list());
     }
+    @GetMapping("/get/{id}")
+    public Result getSpecialById(@PathVariable("id") String id){
+        return Result.ok(blogSpecialService.getById(id));
+    }
 }
