@@ -35,13 +35,12 @@ public class AuthHandlerInterceptor implements HandlerInterceptor {
         }
         response.setCharacterEncoding("utf-8");
         String token = request.getHeader("Authorization");
+
         if (token != null) {
             Pair<String, String> result = TokenUtils.verify(token);
             return true;
         }
-        /*
-         * 还可以在此处检验用户存不存在等操作
-         */
-        return false;
+        String web = request.getHeader("web");
+        return web != null;
     }
 }

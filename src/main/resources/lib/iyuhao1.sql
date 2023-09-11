@@ -264,13 +264,6 @@ alter table `blog_special`
     add column `blog_special_last_update_user_name` varchar(35)  COMMENT '博客专题最后一次修改人名称';
 
 
-create table `blog_special_article_relationship`
-(
-    `relationship_id` varchar(50) not null comment '主键id',
-    ``
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_bin COMMENT ='博客专题与文章关系表';
 
 
 
@@ -308,3 +301,12 @@ create table `blog_category_type`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='博客分类类型表';
+
+
+
+
+
+
+
+
+

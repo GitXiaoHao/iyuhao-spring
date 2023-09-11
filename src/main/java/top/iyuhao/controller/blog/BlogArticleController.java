@@ -9,18 +9,15 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.*;
 import top.iyuhao.dto.BlogArticleDto;
-import top.iyuhao.entity.ArticleTag;
-import top.iyuhao.entity.ArticleTagList;
-import top.iyuhao.entity.BlogArticle;
-import top.iyuhao.service.ArticleTagListService;
-import top.iyuhao.service.ArticleTagService;
-import top.iyuhao.service.BlogArticleService;
+import top.iyuhao.entity.*;
+import top.iyuhao.service.*;
 import top.iyuhao.utils.result.Result;
 import top.iyuhao.vo.ArticleSearchDataVo;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author yuhao
@@ -40,9 +37,13 @@ public class BlogArticleController {
     private ArticleTagListService articleTagListService;
     @Resource
     private ArticleTagService articleTagService;
+    @Resource
+    private BlogCategoryService blogCategoryService;
+    @Resource
+    private BlogSpecialService blogSpecialService;
 
     @PostMapping("/article")
-    public Result getArticleByPage(@RequestParam(value = "page", defaultValue = "1") String pageStr, @RequestParam(value = "pageSize", defaultValue = "5") String pageSizeStr, @RequestBody ArticleSearchDataVo articleSearchData) {
+    public Result getArticleByPageFuzzy(@RequestParam(value = "page", defaultValue = "1") String pageStr, @RequestParam(value = "pageSize", defaultValue = "5") String pageSizeStr, @RequestBody ArticleSearchDataVo articleSearchData) {
         int page = Integer.parseInt(pageStr);
         int pageSize = Integer.parseInt(pageSizeStr);
         if (page == 0) {
@@ -59,7 +60,10 @@ public class BlogArticleController {
         blogArticleService.page(articlePage, wrapper);
         return Result.ok(articlePage);
     }
-
+    @GetMapping("/list")
+    public Result getArticleByList() {
+        return Result.ok(blogArticleService.list());
+    }
     @PostMapping("/addArticle")
     public Result addArticle(@RequestBody BlogArticleDto blogArticleDto) {
         //添加文章 同时需要添加标签
@@ -70,6 +74,21 @@ public class BlogArticleController {
             //先添加 文章
             BlogArticle blogArticle = blogArticleDto.getBlogArticle();
             blogArticleService.save(blogArticle);
+            //添加分类 的博客数量 专题的博客数量
+            String blogCategoryName = blogArticle.getBlogCategoryName();
+            if (blogCategoryName != null) {
+                LambdaQueryWrapper<BlogCategory> blogCategoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
+                blogCategoryLambdaQueryWrapper.eq(BlogCategory::getBlogCategoryName,blogCategoryName);
+                BlogCategory blogCategory = blogCategoryService.getOne(blogCategoryLambdaQueryWrapper);
+                blogCategory.setBlogCategoryEssayCount(blogCategory.getBlogCategoryEssayCount() + 1);
+                blogCategoryService.updateById(blogCategory);
+            }
+            String blogSpecialId = blogArticle.getBlogSpecialId();
+            if (blogSpecialId != null) {
+                BlogSpecial blogSpecial = blogSpecialService.getById(blogSpecialId);
+                blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() + 1);
+                blogSpecialService.updateById(blogSpecial);
+            }
             //添加标签
             res = addLabelRelationship(blogArticleDto.getTags(), blogArticle);
             dataSourceTransactionManager.commit(transactionStatus);
@@ -89,6 +108,9 @@ public class BlogArticleController {
         try {
             //先更新
             BlogArticle blogArticle = blogArticleDto.getBlogArticle();
+            //需要修改 分类 专题 博客数量
+            BlogArticle beforeBlogArticle = blogArticleService.getById(blogArticle.getBlogArticleId());
+            updateCount(beforeBlogArticle,blogArticle);
             blogArticleService.updateById(blogArticle);
             //再删除 标签关系表
             deleteArticleTagRelationship(blogArticle);
@@ -178,5 +200,41 @@ public class BlogArticleController {
         }
         articleTagListService.saveBatch(articleTagLists);
         return true;
+    }
+
+    /**
+     * 更新 分类 专题数量
+     * @param before
+     * @param after
+     * @throws Exception
+     */
+    private void updateCount(BlogArticle before, BlogArticle after) throws Exception{
+        // TODO 专题
+        String beforeBlogSpecialId = before.getBlogSpecialId();
+        String afterBlogSpecialId = after.getBlogSpecialId();
+        BlogSpecial blogSpecial =null;
+        if(beforeBlogSpecialId == null && afterBlogSpecialId != null){
+            //之前 等于空 说明 之前没有 现在不等于空 就说明有
+            blogSpecial = blogSpecialService.getById(afterBlogSpecialId);
+            blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() + 1);
+        }else if(beforeBlogSpecialId != null && afterBlogSpecialId == null){
+            blogSpecial = blogSpecialService.getById(beforeBlogSpecialId);
+            blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() - 1);
+        } else if (beforeBlogSpecialId != null) {
+            //现在的
+            BlogSpecial special = blogSpecialService.getById(afterBlogSpecialId);
+            if (!Objects.equals(special.getBlogSpecialId(), beforeBlogSpecialId)) {
+                //说明变了
+                blogSpecial = blogSpecialService.getById(beforeBlogSpecialId);
+                blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() - 1);
+                special.setBlogSpecialEssayCount(special.getBlogSpecialEssayCount() + 1);
+                blogSpecialService.updateById(special);
+            }
+        }
+        if (blogSpecial != null) {
+            blogSpecialService.updateById(blogSpecial);
+        }
+        // TODO 分类
+
     }
 }

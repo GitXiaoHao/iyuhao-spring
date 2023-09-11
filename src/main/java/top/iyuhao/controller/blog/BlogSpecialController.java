@@ -2,7 +2,6 @@ package top.iyuhao.controller.blog;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.bind.annotation.*;
-import top.iyuhao.entity.BlogCategory;
 import top.iyuhao.entity.BlogSpecial;
 import top.iyuhao.service.BlogSpecialService;
 import top.iyuhao.utils.result.Result;
@@ -21,10 +20,10 @@ public class BlogSpecialController {
 
     @GetMapping("/special/{page}/{pageSize}")
     public Result<Page<BlogSpecial>> getCategory(@PathVariable("page") Integer page, @PathVariable("pageSize") Integer pageSize) {
-        if(page == null || page == 0){
+        if (page == null || page == 0) {
             page = 1;
         }
-        if(pageSize == null || pageSize == 0){
+        if (pageSize == null || pageSize == 0) {
             pageSize = 5;
         }
         Page<BlogSpecial> categoryPage = new Page<>(page, pageSize);
@@ -34,7 +33,7 @@ public class BlogSpecialController {
 
 
     @DeleteMapping("/special")
-    public Result deleteSpecial(@RequestBody BlogSpecial blogSpecial){
+    public Result deleteSpecial(@RequestBody BlogSpecial blogSpecial) {
         if (blogSpecial == null) {
             return Result.fail("传输数据失败");
         }
@@ -44,7 +43,7 @@ public class BlogSpecialController {
 
 
     @PostMapping("/special")
-    public Result updateSpecial(@RequestBody BlogSpecial blogSpecial){
+    public Result updateSpecial(@RequestBody BlogSpecial blogSpecial) {
         return blogSpecialService.saveOrUpdate(blogSpecial) ?
                 Result.ok(blogSpecial) : Result.fail("修改失败");
     }
@@ -53,8 +52,9 @@ public class BlogSpecialController {
     public Result getSpecialList() {
         return Result.ok(blogSpecialService.list());
     }
+
     @GetMapping("/get/{id}")
-    public Result getSpecialById(@PathVariable("id") String id){
+    public Result getSpecialById(@PathVariable("id") String id) {
         return Result.ok(blogSpecialService.getById(id));
     }
 }

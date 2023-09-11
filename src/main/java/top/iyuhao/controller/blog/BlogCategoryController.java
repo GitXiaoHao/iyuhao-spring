@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  * @date 2023/8/25
  **/
 @RestController
-@RequestMapping("/blog")
+@RequestMapping("/category")
 @Slf4j
 public class BlogCategoryController {
     @Resource
@@ -28,7 +28,7 @@ public class BlogCategoryController {
     @Autowired
     TransactionDefinition transactionDefinition;
 
-    @GetMapping("/category/{page}/{pageSize}")
+    @GetMapping("/{page}/{pageSize}")
     public Result<Page<BlogCategory>> getCategory(@PathVariable("page") Integer page,@PathVariable("pageSize") Integer pageSize) {
         if(page == null || page == 0){
             page = 1;
@@ -41,7 +41,7 @@ public class BlogCategoryController {
         return Result.ok(categoryPage);
     }
 
-    @GetMapping("/categoryList")
+    @GetMapping("/list")
     public Result getCategoryList() {
         return Result.ok(blogCategoryService.getAll());
     }
@@ -56,7 +56,7 @@ public class BlogCategoryController {
         return blogCategoryService.updateById(category) ? Result.ok("添加成功") : Result.fail("添加失败");
     }
 
-    @DeleteMapping("/category")
+    @DeleteMapping
     public Result deleteCategory(@RequestBody BlogCategory category){
         boolean del = false;
         if (category.getBlogCategoryId() != null) {
