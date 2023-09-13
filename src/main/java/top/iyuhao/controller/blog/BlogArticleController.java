@@ -44,6 +44,10 @@ public class BlogArticleController {
     @Resource
     private UserService userService;
 
+    @GetMapping("/detail/{id}")
+    public Result getArticleById(@PathVariable("id") String id){
+        return Result.ok(userService.getById(id));
+    }
     @PostMapping("/article")
     public Result getArticleByPageFuzzy(@RequestParam(value = "page", defaultValue = "1") String pageStr, @RequestParam(value = "pageSize", defaultValue = "5") String pageSizeStr, @RequestBody ArticleSearchDataVo articleSearchData) {
         int page = Integer.parseInt(pageStr);
