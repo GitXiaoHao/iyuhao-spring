@@ -28,6 +28,8 @@ alter table `user`
 alter table `user`
     add column `user_last_login_time` timestamp comment '最后登录时间' after `user_update_time`;
 alter table `user`
+    add column `user_essay_count` int default 0 comment '文章数量' after `user_fans`;
+alter table `user`
     modify `user_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
 create table article
 (

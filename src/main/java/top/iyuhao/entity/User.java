@@ -38,6 +38,7 @@ public class User implements Serializable {
      * 用户粉丝数量
      */
     private Integer userFans;
+    private Integer userEssayCount;
 
     /**
      * 用户邮箱

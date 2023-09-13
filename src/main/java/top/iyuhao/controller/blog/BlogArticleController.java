@@ -41,6 +41,8 @@ public class BlogArticleController {
     private BlogCategoryService blogCategoryService;
     @Resource
     private BlogSpecialService blogSpecialService;
+    @Resource
+    private UserService userService;
 
     @PostMapping("/article")
     public Result getArticleByPageFuzzy(@RequestParam(value = "page", defaultValue = "1") String pageStr, @RequestParam(value = "pageSize", defaultValue = "5") String pageSizeStr, @RequestBody ArticleSearchDataVo articleSearchData) {
@@ -78,9 +80,11 @@ public class BlogArticleController {
             blogArticleService.save(blogArticle);
             //添加分类 的博客数量 专题的博客数量
             String blogCategoryName = blogArticle.getBlogCategoryName();
-            addBlogCategoryCount(blogCategoryName);
+            updateBlogCategoryCount(blogCategoryName,1);
             String blogSpecialId = blogArticle.getBlogSpecialId();
-            addBlogSpecialCount(blogSpecialId);
+            updateBlogSpecialCount(blogSpecialId,1);
+            String userId = blogArticle.getUserId();
+            updateUserCount(userId,1);
             //添加标签
             res = addLabelRelationship(blogArticleDto.getTags(), blogArticle);
             dataSourceTransactionManager.commit(transactionStatus);
@@ -90,6 +94,8 @@ public class BlogArticleController {
         }
         return res ? Result.ok("success") : Result.fail("fail");
     }
+
+
 
 
     @PutMapping("/update")
@@ -126,6 +132,13 @@ public class BlogArticleController {
             blogArticleService.removeById(blogArticle);
             //再删除 标签关系表
             deleteArticleTagRelationship(blogArticle);
+            //在删除对应得分类数量 专题数量 用户文章数量
+            String blogCategoryName = blogArticle.getBlogCategoryName();
+            String blogSpecialId = blogArticle.getBlogSpecialId();
+            String userId = blogArticle.getUserId();
+            updateBlogCategoryCount(blogCategoryName,-1);
+            updateBlogSpecialCount(blogSpecialId,-1);
+            updateUserCount(userId,-1);
             res = true;
             dataSourceTransactionManager.commit(transactionStatus);
         } catch (Exception e) {
@@ -208,64 +221,57 @@ public class BlogArticleController {
         // TODO 专题
         String beforeBlogSpecialId = before.getBlogSpecialId();
         String afterBlogSpecialId = after.getBlogSpecialId();
-        BlogSpecial blogSpecial = null;
         if (beforeBlogSpecialId == null) {
             if (afterBlogSpecialId != null) {
                 //之前 等于空 说明 之前没有 现在不等于空 就说明有
-                blogSpecial = blogSpecialService.getById(afterBlogSpecialId);
-                blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() + 1);
+                updateBlogSpecialCount(afterBlogSpecialId,1);
             }
         } else {
             //现在的
             if (!Objects.equals(afterBlogSpecialId, beforeBlogSpecialId)) {
                 //说明变了
-                blogSpecial = blogSpecialService.getById(beforeBlogSpecialId);
-                blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() - 1);
-                addBlogSpecialCount(afterBlogSpecialId);
+                updateBlogSpecialCount(beforeBlogSpecialId,-1);
+                updateBlogSpecialCount(afterBlogSpecialId,1);
             }
-        }
-        if (blogSpecial != null) {
-            blogSpecialService.updateById(blogSpecial);
         }
         // TODO 分类
         String beforeBlogCategoryName = before.getBlogCategoryName();
         String afterBlogCategoryName = after.getBlogCategoryName();
-        LambdaQueryWrapper<BlogCategory> blogCategoryLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        BlogCategory blogCategory = null;
         if (beforeBlogCategoryName != null) {
             if (!beforeBlogCategoryName.equals(afterBlogCategoryName)) {
-                blogCategoryLambdaQueryWrapper.eq(BlogCategory::getBlogCategoryName, beforeBlogCategoryName);
-                blogCategory = blogCategoryService.getOne(blogCategoryLambdaQueryWrapper);
-                blogCategory.setBlogCategoryEssayCount(blogCategory.getBlogCategoryEssayCount() - 1);
-                addBlogCategoryCount(afterBlogCategoryName);
+                updateBlogCategoryCount(beforeBlogCategoryName,-1);
+                updateBlogCategoryCount(afterBlogCategoryName,1);
             }
         }
         if (afterBlogCategoryName != null) {
-            blogCategoryLambdaQueryWrapper.eq(BlogCategory::getBlogCategoryName, afterBlogCategoryName);
-            blogCategory = blogCategoryService.getOne(blogCategoryLambdaQueryWrapper);
-            blogCategory.setBlogCategoryEssayCount(blogCategory.getBlogCategoryEssayCount() + 1);
-        }
-        if (blogCategory != null) {
-            blogCategoryService.updateById(blogCategory);
+            updateBlogCategoryCount(afterBlogCategoryName,1);
         }
     }
 
 
-    private void addBlogCategoryCount(String blogCategoryName) {
+    private void updateBlogCategoryCount(String blogCategoryName,Integer num) {
         if (blogCategoryName != null) {
             LambdaQueryWrapper<BlogCategory> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(BlogCategory::getBlogCategoryName, blogCategoryName);
             BlogCategory one = blogCategoryService.getOne(wrapper);
-            one.setBlogCategoryEssayCount(one.getBlogCategoryEssayCount() + 1);
+            one.setBlogCategoryEssayCount(one.getBlogCategoryEssayCount() + num);
             blogCategoryService.updateById(one);
         }
     }
 
-    private void addBlogSpecialCount(String blogSpecialId) {
+    private void updateBlogSpecialCount(String blogSpecialId,Integer num) {
         if (blogSpecialId != null) {
             BlogSpecial blogSpecial = blogSpecialService.getById(blogSpecialId);
-            blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() + 1);
+            blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() + num);
             blogSpecialService.updateById(blogSpecial);
+        }
+    }
+
+    private void updateUserCount(String userId, Integer num) {
+        if (userId != null) {
+            User user = userService.getById(userId);
+            user.setUserEssayCount(user.getUserEssayCount() + num);
+            userService.updateById(user);
         }
     }
 

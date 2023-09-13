@@ -57,7 +57,8 @@ public class BlogAdminController {
         return userService.updateById(user) ?
                 Result.ok(user) : Result.fail("保存失败");
     }
-
-
-
+    @GetMapping("/list")
+    public Result getAdminByList(){
+        return Result.ok(userService.list());
+    }
 }
