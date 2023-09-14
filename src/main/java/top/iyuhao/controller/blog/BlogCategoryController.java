@@ -45,7 +45,10 @@ public class BlogCategoryController {
     public Result getCategoryList() {
         return Result.ok(blogCategoryService.getAll());
     }
-
+    @GetMapping("/get/{id}")
+    public Result getCategoryById(@PathVariable("id") String id){
+        return Result.ok(blogCategoryService.getById(id));
+    }
     @PostMapping("/add")
     public Result addCategory(@RequestBody BlogCategory category) {
         return blogCategoryService.save(category) ? Result.ok("添加成功") : Result.fail("添加失败");

@@ -1,5 +1,6 @@
 package top.iyuhao.controller.blog;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.web.bind.annotation.*;
 import top.iyuhao.dto.ArticleTagDto;
 import top.iyuhao.entity.ArticleTag;
+import top.iyuhao.entity.ArticleTagList;
+import top.iyuhao.service.ArticleTagListService;
 import top.iyuhao.service.ArticleTagService;
 import top.iyuhao.utils.result.Result;
 
@@ -31,6 +34,8 @@ public class ArticleTagController {
     TransactionDefinition transactionDefinition;
     @Resource
     private ArticleTagService articleTagService;
+    @Resource
+    private ArticleTagListService articleTagListService;
 
     @GetMapping("/page/{page}/{pageSize}")
     public Result getArticleTagByPage(@PathVariable("page") Integer page, @PathVariable("pageSize") Integer pageSize) {
@@ -49,6 +54,17 @@ public class ArticleTagController {
     public Result getArticleTagList() {
         List<ArticleTag> list = articleTagService.list();
         return Result.ok(list);
+    }
+    @GetMapping("/get/{id}")
+    public Result getTagListByArticleId(@PathVariable("id") String id) {
+        LambdaQueryWrapper<ArticleTagList> articleTagListLambdaQueryWrapper = new LambdaQueryWrapper<>();
+        articleTagListLambdaQueryWrapper.eq(ArticleTagList::getArticleId,id);
+        List<ArticleTagList> list = articleTagListService.list(articleTagListLambdaQueryWrapper);
+        List<ArticleTag> articleTagList = new ArrayList<>(list.size());
+        for (ArticleTagList tagList : list) {
+            articleTagList.add(articleTagService.getById(tagList.getArticleTagId()));
+        }
+        return Result.ok(articleTagList);
     }
 
     @PostMapping("/add")

@@ -66,4 +66,6 @@ public class BlogStatusController {
         return blogStatusService.removeById(blogStatus) ?
                 Result.ok("删除成功") : Result.fail("删除失败");
     }
+
+
 }

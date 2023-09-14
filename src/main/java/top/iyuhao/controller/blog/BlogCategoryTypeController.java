@@ -19,12 +19,12 @@ public class BlogCategoryTypeController {
     private BlogCategoryTypeService blogCategoryTypeService;
 
     @GetMapping("/list")
-    public Result getBlogStatus() {
+    public Result getBlogCategoryType() {
         return Result.ok(blogCategoryTypeService.list());
     }
 
     @GetMapping("/{page}/{pageSize}")
-    public Result getStatusByPage(@PathVariable("page") Integer page, @PathVariable("pageSize") Integer pageSize) {
+    public Result getCategoryTypeByPage(@PathVariable("page") Integer page, @PathVariable("pageSize") Integer pageSize) {
         if (page == null || page == 0) {
             page = 1;
         }
@@ -37,13 +37,13 @@ public class BlogCategoryTypeController {
     }
 
     @PostMapping("/add")
-    public Result addStatus(@RequestBody BlogCategoryType blogCategoryType) {
+    public Result addCategoryType(@RequestBody BlogCategoryType blogCategoryType) {
         return blogCategoryTypeService.save(blogCategoryType) ?
                 Result.ok(blogCategoryType) : Result.fail();
     }
 
     @PutMapping("/update")
-    public Result updateStatus(@RequestBody BlogCategoryType blogCategoryType) {
+    public Result updateCategoryType(@RequestBody BlogCategoryType blogCategoryType) {
         if (blogCategoryType.getBlogCategoryTypeUpdateTime() != null) {
             blogCategoryType.setBlogCategoryTypeUpdateTime(null);
         }
@@ -52,8 +52,11 @@ public class BlogCategoryTypeController {
     }
 
     @DeleteMapping("/")
-    public Result delete(@RequestBody BlogCategoryType blogCategoryType) {
+    public Result deleteCategoryType(@RequestBody BlogCategoryType blogCategoryType) {
         return blogCategoryTypeService.removeById(blogCategoryType) ?
                 Result.ok("删除成功") : Result.fail("删除失败");
     }
+
+
+
 }

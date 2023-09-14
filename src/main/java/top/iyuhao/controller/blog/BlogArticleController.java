@@ -45,9 +45,26 @@ public class BlogArticleController {
     private UserService userService;
 
     @GetMapping("/detail/{id}")
-    public Result getArticleById(@PathVariable("id") String id){
-        return Result.ok(userService.getById(id));
+    public Result getArticleById(@PathVariable("id") String id) {
+        return Result.ok(blogArticleService.getById(id));
     }
+
+    @GetMapping("/dcn/{name}")
+    public Result getArticleByCategoryName(@PathVariable("name") String name) {
+        LambdaQueryWrapper<BlogArticle> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(BlogArticle::getBlogCategoryName, name);
+        List<BlogArticle> list = blogArticleService.list(wrapper);
+        return Result.ok(list);
+    }
+
+    @GetMapping("/dsi/{id}")
+    public Result getArticleBySpecialId(@PathVariable("id") String id) {
+        LambdaQueryWrapper<BlogArticle> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(BlogArticle::getBlogSpecialId, id);
+        List<BlogArticle> list = blogArticleService.list(wrapper);
+        return Result.ok(list);
+    }
+
     @PostMapping("/article")
     public Result getArticleByPageFuzzy(@RequestParam(value = "page", defaultValue = "1") String pageStr, @RequestParam(value = "pageSize", defaultValue = "5") String pageSizeStr, @RequestBody ArticleSearchDataVo articleSearchData) {
         int page = Integer.parseInt(pageStr);
@@ -84,11 +101,11 @@ public class BlogArticleController {
             blogArticleService.save(blogArticle);
             //添加分类 的博客数量 专题的博客数量
             String blogCategoryName = blogArticle.getBlogCategoryName();
-            updateBlogCategoryCount(blogCategoryName,1);
+            updateBlogCategoryCount(blogCategoryName, 1);
             String blogSpecialId = blogArticle.getBlogSpecialId();
-            updateBlogSpecialCount(blogSpecialId,1);
+            updateBlogSpecialCount(blogSpecialId, 1);
             String userId = blogArticle.getUserId();
-            updateUserCount(userId,1);
+            updateUserCount(userId, 1);
             //添加标签
             res = addLabelRelationship(blogArticleDto.getTags(), blogArticle);
             dataSourceTransactionManager.commit(transactionStatus);
@@ -98,8 +115,6 @@ public class BlogArticleController {
         }
         return res ? Result.ok("success") : Result.fail("fail");
     }
-
-
 
 
     @PutMapping("/update")
@@ -140,9 +155,9 @@ public class BlogArticleController {
             String blogCategoryName = blogArticle.getBlogCategoryName();
             String blogSpecialId = blogArticle.getBlogSpecialId();
             String userId = blogArticle.getUserId();
-            updateBlogCategoryCount(blogCategoryName,-1);
-            updateBlogSpecialCount(blogSpecialId,-1);
-            updateUserCount(userId,-1);
+            updateBlogCategoryCount(blogCategoryName, -1);
+            updateBlogSpecialCount(blogSpecialId, -1);
+            updateUserCount(userId, -1);
             res = true;
             dataSourceTransactionManager.commit(transactionStatus);
         } catch (Exception e) {
@@ -181,6 +196,11 @@ public class BlogArticleController {
         LambdaQueryWrapper<BlogArticle> blogArticleLambdaQueryWrapper = new LambdaQueryWrapper<>();
         blogArticleLambdaQueryWrapper.eq(BlogArticle::getBlogSpecialId, id);
         return Result.ok(blogArticleService.list(blogArticleLambdaQueryWrapper));
+    }
+
+    @PutMapping("/vn")
+    public Result updateBlogArticleViewsNumber(@RequestBody BlogArticle blogArticle) {
+        return blogArticleService.updateById(blogArticle) ? Result.ok() : Result.fail();
     }
 
 
@@ -228,32 +248,36 @@ public class BlogArticleController {
         if (beforeBlogSpecialId == null) {
             if (afterBlogSpecialId != null) {
                 //之前 等于空 说明 之前没有 现在不等于空 就说明有
-                updateBlogSpecialCount(afterBlogSpecialId,1);
+                updateBlogSpecialCount(afterBlogSpecialId, 1);
             }
         } else {
             //现在的
             if (!Objects.equals(afterBlogSpecialId, beforeBlogSpecialId)) {
                 //说明变了
-                updateBlogSpecialCount(beforeBlogSpecialId,-1);
-                updateBlogSpecialCount(afterBlogSpecialId,1);
+                updateBlogSpecialCount(beforeBlogSpecialId, -1);
+                updateBlogSpecialCount(afterBlogSpecialId, 1);
             }
         }
         // TODO 分类
         String beforeBlogCategoryName = before.getBlogCategoryName();
         String afterBlogCategoryName = after.getBlogCategoryName();
-        if (beforeBlogCategoryName != null) {
-            if (!beforeBlogCategoryName.equals(afterBlogCategoryName)) {
-                updateBlogCategoryCount(beforeBlogCategoryName,-1);
-                updateBlogCategoryCount(afterBlogCategoryName,1);
+        if (beforeBlogCategoryName == null) {
+            if (afterBlogCategoryName != null) {
+                updateBlogCategoryCount(afterBlogCategoryName, 1);
             }
         }
-        if (afterBlogCategoryName != null) {
-            updateBlogCategoryCount(afterBlogCategoryName,1);
+        if (beforeBlogCategoryName != null) {
+            if (!beforeBlogCategoryName.equals(afterBlogCategoryName)) {
+                updateBlogCategoryCount(beforeBlogCategoryName, -1);
+                if (afterBlogCategoryName != null) {
+                    updateBlogCategoryCount(afterBlogCategoryName, 1);
+                }
+            }
         }
     }
 
 
-    private void updateBlogCategoryCount(String blogCategoryName,Integer num) {
+    private void updateBlogCategoryCount(String blogCategoryName, Integer num) {
         if (blogCategoryName != null) {
             LambdaQueryWrapper<BlogCategory> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(BlogCategory::getBlogCategoryName, blogCategoryName);
@@ -263,7 +287,7 @@ public class BlogArticleController {
         }
     }
 
-    private void updateBlogSpecialCount(String blogSpecialId,Integer num) {
+    private void updateBlogSpecialCount(String blogSpecialId, Integer num) {
         if (blogSpecialId != null) {
             BlogSpecial blogSpecial = blogSpecialService.getById(blogSpecialId);
             blogSpecial.setBlogSpecialEssayCount(blogSpecial.getBlogSpecialEssayCount() + num);

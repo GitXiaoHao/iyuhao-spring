@@ -219,6 +219,12 @@ alter table `blog_article`
 alter table `blog_article` drop `blog_special_name`;
 alter table `blog_article`
     modify `blog_category_is_deleted` tinyint(3) NOT NULL DEFAULT '1' COMMENT '删除标记（0:不可用 1:可用）';
+alter table `blog_article`
+    modify `blog_article_good_number` int default 0 comment '点赞次数';
+alter table `blog_article`
+    modify `blog_article_views_number` int default 0 comment '观看次数';
+alter table `blog_article`
+    modify `blog_article_favorite_number` int default 0 comment '收藏次数';
 
 create table `blog_status`
 (
